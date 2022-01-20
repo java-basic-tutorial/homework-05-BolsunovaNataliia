@@ -1,8 +1,7 @@
 package com.softserveinc.task02;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Task02 {
 
@@ -20,32 +19,60 @@ public class Task02 {
 
     static List<Employee> ex01() {
         // TODO: find and return list of all male employee with aged 18 to 27 (inclusive)
-        return null;
+        List<Employee> boys = EMPLOYEES.stream()
+            .filter(line -> line.getGender() == Gender.MAN)
+            .filter(line -> line.getAge() >= 18 && line.getAge() <= 27)
+        .collect(Collectors.toCollection(() -> new LinkedList<>()));
+        return boys;
     }
 
-    static double ex02() {
+static double ex02() {
         // TODO: compute the average age of all male
-        return 0L;
+    List<Employee> men = EMPLOYEES.stream()
+            .filter(line -> line.getGender() == Gender.MAN)
+        .collect(Collectors.toCollection(() -> new LinkedList<>()));
+        OptionalDouble average = men.stream().mapToInt(Employee::getAge).average();
+        if(average.isPresent()) {
+            return average.getAsDouble();
+        }
+        return 0;
     }
 
     static long ex03() {
         // TODO: count how many employees are male aged 18 to 60 and women aged 18 to 55
-        return 0L;
+        List<Employee> men = EMPLOYEES.stream()
+                .filter(line -> line.getGender() == Gender.MAN)
+                .filter(line -> line.getAge() >= 18 && line.getAge() <= 60)
+                .collect(Collectors.toCollection(() -> new LinkedList<>()));
+        List<Employee> women = EMPLOYEES.stream()
+                .filter(line -> line.getGender() == Gender.MAN)
+                .filter(line -> line.getAge() >= 18 && line.getAge() <= 55)
+                .collect(Collectors.toCollection(() -> new LinkedList<>()));
+        long count = men.stream().count() + women.stream().count();
+        return count;
     }
 
     static List<Employee> ex04() {
         // TODO: return the list of employees was sort employee by name in descending order
-        return null;
+        List<Employee> descOrder = EMPLOYEES.stream()
+                .sorted(Comparator.comparing(Employee::getName).reversed())
+                .collect(Collectors.toCollection(() -> new LinkedList<>()));
+        return descOrder;
     }
 
-    static Employee ex05() {
+    static OptionalInt ex05() {
         // TODO: find and return the oldest employee
-        return null;
+        OptionalInt maxAge = EMPLOYEES.stream()
+                .mapToInt(Employee::getAge).max();
+        return maxAge;
     }
 
-    static Employee ex06() {
+    static Optional<Employee> ex06() {
         // TODO: find and return the youngest employee
-        return null;
+        Optional<Employee> youngest = EMPLOYEES.stream()
+                .sorted(Comparator.comparing(Employee::getAge))
+                .findFirst();
+        return youngest;
     }
 
     public static void main(String[] args) {

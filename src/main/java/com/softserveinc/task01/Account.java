@@ -15,14 +15,30 @@ public class Account {
         this.balance = balance;
     }
 
-    public void deposit(long amount) {
+    /**
+     * @param amount, should be positive
+     */
+//    public void deposit(long amount) throws IllegalArgumentException {
+    public void deposit(long amount) throws IllegalArgumentException {
         // TODO: if amount is negative - throw IllegalArgumentException
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount should be positive");
+        }
         balance += amount;
     }
 
-    public void withdraw(long amount) {
+    /**
+     * @param amount, should be positive
+     */
+    public void withdraw(long amount) throws IllegalArgumentException, NotMoneyEnoughException {
         // TODO: if amount is negative - throw IllegalArgumentException
         // TODO: if amount higher than balance - throw NoManyEnoughException
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount should be positive");
+        }
+        if(amount > balance) {
+            throw new NotMoneyEnoughException("Not enough money on balance for withdrow " + amount + "$");
+        }
         balance -= amount;
     }
 }
